@@ -16,11 +16,10 @@ import Testimonial from "./Testimonial"
 import Community from "./Community"
 import Price from "./Price"
 import Blog from "./Blog"
-<<<<<<< HEAD
-import Reviews from "./Reviews"
-=======
 
->>>>>>> 12157af7018df910f72c4b7f36829b7cf4249d01
+import Reviews from "./Reviews"
+
+
 
 
 export default function Home() {
