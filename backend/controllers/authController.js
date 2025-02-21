@@ -79,3 +79,19 @@ exports.login = async (req, res) => {
   }
 }
 
+exports.updateUser = async (req, res) => {
+  try {
+    console.log(res.body);
+    const { name, weight } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, weight },
+      { new: true }
+    );
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};

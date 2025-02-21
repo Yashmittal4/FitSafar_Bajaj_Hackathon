@@ -23,6 +23,6 @@ router.post(
   ],
   authController.login,
 )
-
+router.put("/:id", authController.updateUser);
 module.exports = router
 

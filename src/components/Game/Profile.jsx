@@ -1,12 +1,8 @@
-
-
-
-"use client"
-
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { useNavigate } from "react-router-dom"
+import { Pencil, Check, X } from "lucide-react"
 import { Trophy, Users, ShoppingBag, Dumbbell, Award, Flame, Target, Zap, ChevronDown, ChevronUp } from "lucide-react"
 import CountUp from "react-countup"
 import { useAuth } from "../../Context/AuthContext"
@@ -47,6 +43,7 @@ const ProgressRing = ({ progress, size = 120, strokeWidth = 8 }) => {
   )
 }
 
+
 const Profile = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -56,10 +53,42 @@ const Profile = () => {
     threshold: 0.1,
     triggerOnce: true,
   })
-
+  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
+  const [name, setName] = useState(user?.name || "")
+  const [weight, setWeight] = useState(user?.weight || "")
+  const [tempWeight, setTempWeight] = useState(weight);
+  const [tempName, setTempName] = useState(name);
   const [isStatsExpanded, setIsStatsExpanded] = useState(false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-
+  
+  console.log(user);
+  const handleSave = async () => {
+    if (tempName.trim() === "") return;
+    setIsEditing(false);
+  
+    await fetch(`http://localhost:5173/api/user/${user.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: tempName, weight }),
+    });
+  
+    setName(tempName);
+  };
+  
+  const handleSaveWeight = async () => {
+    if (tempWeight.trim() === "") return;
+    setIsEditingWeight(false);
+  
+    await fetch(`http://localhost:5173/api/user/${user.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, weight: tempWeight }),
+    });
+  
+    setWeight(tempWeight);
+  };
+  
   useEffect(() => {
     const fetchUserProgress = async () => {
       try {
@@ -214,14 +243,66 @@ const Profile = () => {
                 >
                   <img src="/placeholder.svg" alt="Profile" className="w-full h-full object-cover rounded-2xl" />
                 </motion.div>
-                <div>
-                  <motion.h2
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    className="text-2xl font-bold text-white mb-1"
-                  >
-                    {user?.name || "Warrior"}
-                  </motion.h2>
+                  <div>
+                  <div className="flex items-center gap-2">
+                  {isEditing ? (
+      <>
+        <input
+          type="text"
+          value={tempName}
+          onChange={(e) => setTempName(e.target.value)}
+          className="bg-gray-800 text-white text-lg font-bold px-2 py-1 rounded outline-none"
+        />
+        <button onClick={handleSave} className="text-green-400">
+          <Check size={20} />
+        </button>
+        <button onClick={() => setIsEditing(false)} className="text-red-400">
+          <X size={20} />
+        </button>
+      </>
+    ) : (
+      <motion.h2
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className="text-2xl font-bold text-white mb-1 flex items-center gap-2"
+      >
+        {name}
+        <button onClick={() => setIsEditing(true)} className="text-gray-400 hover:text-white">
+          <Pencil size={20} />
+        </button>
+      </motion.h2>
+    )}
+
+                  </div>
+                  <div className="flex items-center gap-2">
+      {isEditingWeight ? (
+        <>
+          <input
+            type="text"
+            value={tempWeight}
+            onChange={(e) => setTempWeight(e.target.value)}
+            className="bg-gray-800 text-white text-lg font-bold px-2 py-1 rounded outline-none"
+          />
+          <button onClick={handleSaveWeight} className="text-green-400">
+            <Check size={20} />
+          </button>
+          <button onClick={() => setIsEditingWeight(false)} className="text-red-400">
+            <X size={20} />
+          </button>
+        </>
+      ) : (
+        <motion.h2
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="text-xl font-bold text-gray-300 flex items-center gap-2"
+        >
+          {weight}
+          <button onClick={() => setIsEditingWeight(true)} className="text-gray-400 hover:text-white">
+            <Pencil size={20} />
+          </button>
+        </motion.h2>
+      )}
+    </div>
                   <div className="flex items-center gap-2">
                     <Flame className="text-orange-500" size={16} />
                     <span className="text-orange-400">Level {Math.floor((userProgress?.stats?.totalXP || 0) / 100) + 1}</span>
@@ -259,23 +340,23 @@ const Profile = () => {
 
                 
                 <div className="grid grid-cols-3 gap-4">
-  {[
-    { icon: Users, label: "Leaderboard", path: "/leaderboard" },
-    { icon: ShoppingBag, label: "Shop", path: "/shop" },
-    { icon: Trophy, label: "Achievements", path: "/social" },
-  ].map((btn, i) => (
-    <motion.button
-      key={i}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      onClick={() => navigate(btn.path)}
-      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-colors"
-    >
-      <btn.icon size={24} />
-      <span className="text-xs">{btn.label}</span>
-    </motion.button>
-  ))}
-</div>
+                {[
+                  { icon: Users, label: "Leaderboard", path: "/leaderboard" },
+                  { icon: ShoppingBag, label: "Shop", path: "/shop" },
+                  { icon: Trophy, label: "Achievements", path: "/social" },
+                ].map((btn, i) => (
+                  <motion.button
+                    key={i}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => navigate(btn.path)}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-colors"
+                  >
+                    <btn.icon size={24} />
+                    <span className="text-xs">{btn.label}</span>
+                  </motion.button>
+                ))}
+              </div>
               </div>
             </div>
           </motion.div>
