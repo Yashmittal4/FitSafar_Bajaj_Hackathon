@@ -28,14 +28,9 @@ app.use("/api/user-progress", userProgressRoutes)
 app.use("/api/leaderboard", leaderboardRoutes)
 app.use("/api/posts", postRoutes)
 app.use("/api/period", periodRoutes)
-<<<<<<< HEAD
 app.use("/api/reviews", reviewRoutes)
 
-=======
->>>>>>> 12157af7018df910f72c4b7f36829b7cf4249d01
 
-
-const server = http.createServer(app)
 
 const io = new Server(server, {
   cors: {
