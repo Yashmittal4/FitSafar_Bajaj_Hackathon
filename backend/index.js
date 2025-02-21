@@ -9,11 +9,8 @@ const userProgressRoutes = require("./routes/userProgress")
 const leaderboardRoutes = require("./routes/leaderboard")
 const postRoutes = require("./routes/posts")
 const periodRoutes = require("./routes/periodRoutes")
-<<<<<<< HEAD
 const reviewRoutes = require("./routes/reviews")
 
-=======
->>>>>>> 12157af7018df910f72c4b7f36829b7cf4249d01
 
 
 
