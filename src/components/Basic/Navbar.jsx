@@ -29,6 +29,7 @@ function Navbar() {
             <Link to="/profile" className="text-gray-600 hover:text-gray-900 transition duration-300">Profile</Link>
             <Link to="/levels" className="text-gray-600 hover:text-gray-900 transition duration-300">Workout</Link>
             <Link to="/social" className="text-gray-600 hover:text-gray-900 transition duration-300">Social</Link>
+            <Link to="/period" className="text-gray-600 hover:text-gray-900 transition duration-300">Period</Link>
 
             {user ? (
               <>
@@ -71,6 +72,7 @@ function Navbar() {
                 <Link to="/profile" className="text-gray-600 hover:text-gray-900 transition duration-300">Profile</Link>
                 <Link to="/levels" className="text-gray-600 hover:text-gray-900 transition duration-300">Workout</Link>
                 <Link to="/social" className="text-gray-600 hover:text-gray-900 transition duration-300">Social</Link>
+                <Link to="/period" className="text-gray-600 hover:text-gray-900 transition duration-300">Period</Link>
                 {user ? (
                   <>
                     <span className="text-gray-600">Hi, {user.name}</span>
