@@ -226,6 +226,20 @@ const Profile = () => {
                     <Flame className="text-orange-500" size={16} />
                     <span className="text-orange-400">Level {Math.floor((userProgress?.stats?.totalXP || 0) / 100) + 1}</span>
                   </div>
+                  {user.weight && user.height ? (
+                  <div className="flex items-center gap-2 mt-2">
+                    <Dumbbell className="text-blue-500" size={16} />
+                    <span className="text-blue-400">
+                      BMI:{" "}
+                      {(
+                        user.weight /
+                        (user.height / 100) ** 2
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-gray-400 text-sm mt-2">BMI data not available</span>
+                )}
                 </div>
               </div>
 

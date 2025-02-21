@@ -30,7 +30,7 @@ app.use("/api/posts", postRoutes)
 app.use("/api/period", periodRoutes)
 app.use("/api/reviews", reviewRoutes)
 
-
+const server = http.createServer(app)
 
 const io = new Server(server, {
   cors: {
